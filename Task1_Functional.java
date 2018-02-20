@@ -282,42 +282,169 @@ public class Task1_Functional {
 	@Test
 	public void tEngineSpec3a() {
 		
+		map.store("t itle", "Mr.");
+		map.store("name", "Bob");
+		map.store("surname", "Smith");
 		
+		Integer matchingMode = 0; 
+		Integer matchingMode2 = null; 
+		Integer matchingMode3 = TemplateEngine.DEFAULT; 
 		
+		//String examples which shows keep unmatched, case insensitive and accurate search are used
 		
+		String input = "Full Name: ${title} ${NAME} ${middlename} ${SURNAME}"; 
+		String expected = "Full Name: ${title} Bob ${middlename} Smith"; 
+		
+		String result1 = engine.evaluate(input, map, matchingMode); 
+		String result2 = engine.evaluate(input, map, matchingMode); 
+		String result3 = engine.evaluate(input, map, matchingMode); 
+		
+		assertEquals(result1, expected); 
+		assertEquals(result2, expected); 
+		assertEquals(result3, expected); 		
 	}
 	
-	
-	
 	// if matchingmode = DELETE_UNMACHED, then DELETE_UNMATCHED, CASE_INSENSITIVE, ACCURATE_SEARCH is used
+	@Test
+	public void tEngineSpec3b() {
+		
+		map.store("t itle", "Mr.");
+		map.store("name", "Bob");
+		map.store("surname", "Smith");
+		
+		Integer matchingMode = TemplateEngine.DELETE_UNMATCHED; 
+		
+		//String examples which shows delete unmatched, case insensitive and accurate search are used
+		//Doesnt match "t title". Deletes ${title} and ${middle name}. Matches NAME with name etc. 
+		
+		String input = "Full Name: ${title} ${NAME} ${middlename} ${SURNAME}"; 
+		String expected = "Full Name:  Bob  Smith"; 
+		String result = engine.evaluate(input, map, matchingMode); 
 	
+		assertEquals(result, expected); 
+	}
 	
 	// If matchingmode = CASE_SENSITIVE | BLUR_SEARCH, then KEEP_UNMATCHED, CASE_SENSITVE, BLUR_SEARCH is used
 	
+	@Test
+	public void tEngineSpec3c() {
+		
+		map.store("t itle", "Mr.");
+		map.store("name", "Bob");
+		map.store("surname", "Smith");
+		
+		Integer matchingMode = TemplateEngine.CASE_SENSITIVE|TemplateEngine.BLUR_SEARCH; 
+		
+		//Blur search matches ${title} with "t itle". 
+		//Case_sensitive means ${NAME} doesn't match with "name"
+		//Keep unmatched keeps ${NAME} and ${middle name}. 
+		
+		String input = "Full Name: ${title} ${NAME} ${middlename} ${surname}"; 
+		String expected = "Full Name: Mr. ${NAME} ${middlename} Smith"; 
+		
+		String result = engine.evaluate(input, map, matchingMode); 
+	
+		assertEquals(result, expected); 
+	}
 	
 	// When contradictory matching mode is set, the non-default one is used. 
 	
+	// Test matching. DELETE_UNMATCHED is non-default
+	@Test    
+	public void tEngineSpec3di() {
 		
-	// If matchingmode = DELETE_UNMATCHED|KEEP_UNMATCHED|CASE_SENSITIVE, then ACCURATE_SEARCH
+		map.store("name", "Bob");
+		
+		Integer matchingMode = TemplateEngine.DELETE_UNMATCHED|TemplateEngine.KEEP_UNMATCHED; 
+		
+		String input = "Hi ${name}${surname}"; 
+		String expected = "Hi Bob";
+		
+		String result = engine.evaluate(input, map, matchingMode); 
+		
+		assertEquals(result, expected); 
+	}
+	
+	//Testing case sensitivity. case sensitive is non-default
+	@Test
+	public void tEngineSpec3dii() {
+		
+		map.store("Name", "Bob"); 
+		map.store("name","Bobby"); 
+		
+		Integer matchingMode = TemplateEngine.CASE_INSENSITIVE|TemplateEngine.CASE_SENSITIVE; 
+		
+		// If case is insensitive, result is "Hi Bob". If case is sensitive, result is "Hi Bobby"
+		String input = "Hi ${name}"; 
+		String expected = "Hi Bobby"; 
+		
+		String result = engine.evaluate(input, map, matchingMode); 
+		assertEquals(result, expected);
+	}
+	//Testing search. Blur search is non default
+	@Test
+	public void tEngineSpec3diii() {
+		
+		map.store("na me", "Bob"); 
+		map.store("name","Bobby"); 
+		
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH|TemplateEngine.ACCURATE_SEARCH; 
+		
+		// If accurate_search is used, output is "Hi Bobby". If blur search, output is "Hi Bob"
+		
+		String input = "Hi ${name}"; 
+		String expected = "Hi Bob"; 
+		
+		String result = engine.evaluate(input, map, matchingMode); 
+		assertEquals(result, expected);
+	}	
+	// If matchingMode = DELETE_UNMATCHED|KEEP_UNMATCHED|CASE_SENSITIVE, then ACCURATE_SEARCH
 	// DELETE_UNMATCHED, CASE_SENSITIVE will be used.
+	// TODO: doesn't need tested?? 
 	
+// Spec4: In a template, everything between its boundaries ${} is treated as normal text when 
+// matched against an entry
 	
-	
-	
-	
-	
-// Spec4: In a template, everything between its boundaries ${} is treated as normal text when matched against an entry
+	// TODO: ? 
 	
 	
 // Spec5: WHen a template is matched against an entry key & BLUR_SEARCH is enabled, any non visible
-// character dpes mpt affect the result
+// character does not affect the result
+	
+	// TODO: already tested?
+	
+	@Test
+public void tEngineSpec5() {	
+		
+		map.store("middle name", "Peter");
+		
+		Integer matchingMode = engine.BLUR_SEARCH; 
+		Integer matchingMode2 = engine.ACCURATE_SEARCH; 		
+
+		String input = "${middlename}, ${middle name}, ${middle		name}"; //no space, 2 spaces, 1 tab
+		String expectedBlur = "Peter, Peter, Peter"; 
+		String expectedAccurate = "${middlename}, Peter, ${middle		name}";
+		
+		String result1 = engine.evaluate(input, map, matchingMode);
+		String result2 = engine.evaluate(input,map, matchingMode2); 
+		
+		assertEquals(expectedBlur, result1); 
+		assertEquals(expectedAccurate, result2); 
+	}
 	
 	
 // Spec6: When CASE_INSENSITIVE is enabled, letter case is not taken in consideration when 
 // matching against entries
 	
-	
+	// TODO: already tested? 
+
+
 // Spec7: In a template string every ${} acts as a boundary of at MOST one template
+	
+	@Test
+	public void tEngineSpec7() {
+		
+	}
 	
 	
 // Spec8: In a template string, different templates are ordered according to their length, 
