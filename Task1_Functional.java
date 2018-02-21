@@ -278,7 +278,7 @@ public class Task1_Functional {
 	}
 	
 // Spec3:
-	// If matchingmode = 0 or NULL or default, KEEP_UNMATCHED, CASE_INSENSITIVE, ACCURATE_SEARCH is used
+	// If matching mode = 0 or NULL or default, KEEP_UNMATCHED, CASE_INSENSITIVE, ACCURATE_SEARCH is used
 	@Test
 	public void tEngineSpec3a() {
 		
@@ -351,7 +351,7 @@ public class Task1_Functional {
 	
 	// Test matching. DELETE_UNMATCHED is non-default
 	@Test    
-	public void tEngineSpec3di() {
+	public void tEngineSpec3matching() {
 		
 		map.store("name", "Bob");
 		
@@ -367,7 +367,7 @@ public class Task1_Functional {
 	
 	//Testing case sensitivity. case sensitive is non-default
 	@Test
-	public void tEngineSpec3dii() {
+	public void tEngineSpec3casesens() {
 		
 		map.store("Name", "Bob"); 
 		map.store("name","Bobby"); 
@@ -383,7 +383,7 @@ public class Task1_Functional {
 	}
 	//Testing search. Blur search is non default
 	@Test
-	public void tEngineSpec3diii() {
+	public void tEngineSpec3blursearch() {
 		
 		map.store("na me", "Bob"); 
 		map.store("name","Bobby"); 
@@ -426,34 +426,69 @@ public class Task1_Functional {
 	// TODO: already tested?
 	
 	@Test
-public void tEngineSpec5() {	
-		
-		map.store("middle name", "Peter");
-		
-		Integer matchingMode = engine.BLUR_SEARCH; 
-		Integer matchingMode2 = engine.ACCURATE_SEARCH; 		
-
-		String input = "${middlename}, ${middle name}, ${middle		name}"; //no space, 2 spaces, 1 tab
-		String expectedBlur = "Peter, Peter, Peter"; 
-		String expectedAccurate = "${middlename}, Peter, ${middle		name}";
-		
-		String result1 = engine.evaluate(input, map, matchingMode);
-		String result2 = engine.evaluate(input,map, matchingMode2); 
-		
-		assertEquals(expectedBlur, result1); 
-		assertEquals(expectedAccurate, result2); 
+	public void tEngineSpec5spacetab() {	
+			
+			map.store("middle name", "Peter");
+			
+			Integer matchingMode = engine.BLUR_SEARCH; 
+			Integer matchingMode2 = engine.ACCURATE_SEARCH; 		
+	
+			String input = "${middlename}, ${middle name}, ${middle		name}"; //no space, 2 spaces, 1 tab
+			String expectedBlur = "Peter, Peter, Peter"; 
+			String expectedAccurate = "${middlename}, Peter, ${middle		name}";
+			
+			String result1 = engine.evaluate(input, map, matchingMode);
+			String result2 = engine.evaluate(input,map, matchingMode2); 
+			
+			assertEquals(expectedBlur, result1); 
+			assertEquals(expectedAccurate, result2); 
 	}
 	
+	@Test
+	public void tEngineSpec5newline() {	
+			
+			map.store("middle name", "Peter");
+			
+			Integer matchingMode = engine.BLUR_SEARCH; 
+			
+			String input = "${middle"
+					+ "name}"; 
+			String result1 = engine.evaluate(input, map, matchingMode);
+			
+			System.out.println(result1); 
+	}
+	
+
 	
 // Spec6: When CASE_INSENSITIVE is enabled, letter case is not taken in consideration when 
 // matching against entries
-	
-	// TODO: already tested? 
 
+	@Test 
+	public void tEngineSpec6() {
+		
+		map.store("Name", "Adam"); 
+		map.store("NAME", "Bob");
+		
+		// as case is insensitive ${NAME} the first variation of ${name} which is Adam
+		
+		String input = "Hey ${NAME}";
+		String expected = "Hey Adam"; 
+		String result = engine.evaluate(input, map, TemplateEngine.DEFAULT); 
+		
+		assertEquals(result, expected) ; 
+	}
 
 // Spec7: In a template string every ${} acts as a boundary of at MOST one template
 	
-	
+	@Test 
+	public void tEngineSpec7() {
+		
+		
+		
+		
+		
+		
+	}
 	
 
 // Spec8: In a template string, different templates are ordered according to their length, 
@@ -463,7 +498,6 @@ public void tEngineSpec5() {
 	public void tEngineSpec8() {
 		
 		map.store("name","Adam");
-		map.store("surname", "Dykes");
 		map.store("age :)", "25");
 		map.store("symbol", ":)");
 		
