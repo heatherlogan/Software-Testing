@@ -350,7 +350,7 @@ public class Task1_Functional {
 	// When contradictory matching mode is set, the non-default one is used. 
 	
 	// Test matching. DELETE_UNMATCHED is non-default
-	@Test    
+	@Test  
 	public void tEngineSpec3di() {
 		
 		map.store("name", "Bob");
@@ -414,7 +414,7 @@ public class Task1_Functional {
 	// TODO: already tested?
 	
 	@Test
-public void tEngineSpec5() {	
+	public void tEngineSpec5() {	
 		
 		map.store("middle name", "Peter");
 		
@@ -454,4 +454,337 @@ public void tEngineSpec5() {
 // Spec9: The engine processes one template at a time and attempts to match it against the keys of the
 // EntryMap entries until there is a match or the entry list is exhausted. 
 	
+	/*-------------------- SimpleTemplateEngine Class Tests --------------------*/
+	
+//Spec1: If template string null or empty, unchanged template string is returned
+	@Test
+	public void sEngineSpec1Empty() {
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec1Null() {
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = null;
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = null;
+        
+        assertEquals(result,expected);
+	}
+	//Spec2: If formatted pattern is string null or empty, unchanged template string is returned
+	@Test
+	public void sEngineSpec2Empty() {
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David. David is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec2Null() {
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = null;
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David. David is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	//Spec3: If value string is null or empty, unchanged template string is returned
+	@Test
+	public void sEngineSpec3Empty() {
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "David";
+        String value = "";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David. David is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec3Null() {
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "David";
+        String value = null;
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David. David is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	//Spec4: If value string is null or empty, unchanged template string is returned
+	
+	//Spec4-1 When pattern (2nd argument) is a string with no #, all occurences are replaced.
+	@Test
+	public void sEngineSpec4_1() {
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is Peter. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	//Spec4-2
+	@Test
+	public void sEngineSpec4_2a() { // The 3rd David Exists.
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename. David.";
+        String pattern = "David#3";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David. David is my forename. Peter.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec4_2b() { // The 3rd David does not exist.
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "David#3";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David. David is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec4_2c() { // No David exists. Possibly not needed.*delete_later*
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "This is a sentence.";
+        String pattern = "David#3";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "This is a sentence.";
+        
+        assertEquals(result,expected);
+	}
+	//Spec4-3
+	@Test
+	public void sEngineSpec4_3() { 
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David#. David is my forename.";
+        String pattern = "David##";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is Peter. David is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec4_4() { 
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David#. David# is my forename.";
+        String pattern = "David###2";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David#. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec4_5() { 
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, David, my name is David. David is my forename.";
+        String pattern = "David#3d";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, David, my name is David. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	//Spec5
+	@Test
+	public void sEngineSpec5DefaultCaseA() { //Tests that this matchingmode is not case sensitive
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "DAVID";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is Peter. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5DefaultCaseB() { //Tests that this matchingmode is not case sensitive.
+		//Possibly not needed. *delete_later*
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "David#2";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is David. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5DefaultSeparationA() { //Tests that this matchingmode is not seperation 
+											//character-sensitive
+		
+		//Separate tests for each non alphanumeric character? *delete_later*
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name isDavid. David is my forename.";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name isPeter. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5DefaultSeparationB() { //Tests that this matchingmode is not seperation 
+											//character-sensitive
+		
+		//Separate tests for each non alphanumeric character? *delete_later*
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is Peter. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5WholeWorld_SeparationTest() { //Situation where word isn't separated
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name isDavid. David is my forename.";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.WHOLE_WORLD_SEARCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name isDavid. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5WholeWorld_CaseTest() { //
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is DAVID. David is my forename.";
+        String pattern = "DAVID";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.WHOLE_WORLD_SEARCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is Peter. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5CaseSensitive_CaseTest() { //
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is DAVID. David is my forename.";
+        String pattern = "DAVID";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.CASE_SENSITIVE;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is Peter. David is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5CaseSensitive_SeparationTest() { //
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name isDavid. David is my forename.";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.CASE_SENSITIVE;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name isPeter. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5CaseAndWholeWorld_SeparationTest() { //
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name isDavid. David is my forename.";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.CASE_SENSITIVE|SimpleTemplateEngine.WHOLE_WORLD_SEARCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name isDavid. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	@Test
+	public void sEngineSpec5CaseAndWholeWorld_CaseTest() { //
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is DAVID. David is my forename.";
+        String pattern = "David";
+        String value = "Peter";
+        Integer matchingMode = SimpleTemplateEngine.CASE_SENSITIVE|SimpleTemplateEngine.WHOLE_WORLD_SEARCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is DAVID. Peter is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	//Spec6
+	@Test
+	public void sEngineSpec6() { //
+		SimpleTemplateEngine engine = new SimpleTemplateEngine();
+		String template = "Hi, my name is David. David is my forename.";
+        String pattern = "David";
+        String value = "DavidDavid";
+        Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+        
+        String result = engine.evaluate(template, pattern, value, matchingMode);
+        String expected = "Hi, my name is DavidDavid. DavidDavid is my forename.";
+        
+        assertEquals(result,expected);
+	}
+	//^How to deal with infinite recursion?
+
 }
