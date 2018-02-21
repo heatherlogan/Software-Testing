@@ -324,7 +324,7 @@ public class Task1_Functional {
 		assertEquals(result, expected); 
 	}
 	
-	// If matchingmode = CASE_SENSITIVE | BLUR_SEARCH, then KEEP_UNMATCHED, CASE_SENSITVE, BLUR_SEARCH is used
+	// If matchingMode = CASE_SENSITIVE | BLUR_SEARCH, then KEEP_UNMATCHED, CASE_SENSITVE, BLUR_SEARCH is used
 	
 	@Test
 	public void tEngineSpec3c() {
@@ -400,7 +400,6 @@ public class Task1_Functional {
 	}	
 	// If matchingMode = DELETE_UNMATCHED|KEEP_UNMATCHED|CASE_SENSITIVE, then ACCURATE_SEARCH
 	// DELETE_UNMATCHED, CASE_SENSITIVE will be used.
-	// TODO: doesn't need tested?? 
 	
 // Spec4: In a template, everything between its boundaries ${} is treated as normal text when 
 // matched against an entry
@@ -417,45 +416,41 @@ public class Task1_Functional {
 		
 		assertEquals(expected, result);
 	}
-	
 
-	
 // Spec5: WHen a template is matched against an entry key & BLUR_SEARCH is enabled, any non visible
 // character does not affect the result
-	
-	// TODO: already tested?
 	
 	@Test
 	public void tEngineSpec5spacetab() {	
 			
-			map.store("middle name", "Peter");
+		map.store("middle name", "Peter");
 			
-			Integer matchingMode = engine.BLUR_SEARCH; 
-			Integer matchingMode2 = engine.ACCURATE_SEARCH; 		
+		Integer matchingMode = engine.BLUR_SEARCH; 
+		Integer matchingMode2 = engine.ACCURATE_SEARCH; 		
 	
-			String input = "${middlename}, ${middle name}, ${middle		name}"; //no space, 2 spaces, 1 tab
-			String expectedBlur = "Peter, Peter, Peter"; 
-			String expectedAccurate = "${middlename}, Peter, ${middle		name}";
+		String input = "${middlename}, ${middle name}, ${middle		name}"; //no space, 2 spaces, 1 tab
+		String expectedBlur = "Peter, Peter, Peter"; 
+		String expectedAccurate = "${middlename}, Peter, ${middle		name}";
 			
-			String result1 = engine.evaluate(input, map, matchingMode);
-			String result2 = engine.evaluate(input,map, matchingMode2); 
+		String result1 = engine.evaluate(input, map, matchingMode);
+		String result2 = engine.evaluate(input,map, matchingMode2); 
 			
-			assertEquals(expectedBlur, result1); 
-			assertEquals(expectedAccurate, result2); 
+		assertEquals(expectedBlur, result1); 
+		assertEquals(expectedAccurate, result2); 
 	}
 	
 	@Test
 	public void tEngineSpec5newline() {	
 			
-			map.store("middle name", "Peter");
+		map.store("middle name", "Peter");
 			
-			Integer matchingMode = engine.BLUR_SEARCH; 
+		Integer matchingMode = engine.BLUR_SEARCH; 
 			
-			String input = "${middle"
+		String input = "${middle"
 					+ "name}"; 
-			String result1 = engine.evaluate(input, map, matchingMode);
+		String result1 = engine.evaluate(input, map, matchingMode);
 			
-			System.out.println(result1); 
+		System.out.println(result1); 
 	}
 	
 
@@ -483,10 +478,17 @@ public class Task1_Functional {
 	@Test 
 	public void tEngineSpec7() {
 		
+		map.store("name", "Bob");
+		map.store("surname", "Smith");
 		
+		String input = "Hey ${name surname}"; 
+		String compare = "Hey Bob Smith"; 
+		String result = engine.evaluate(input, map, TemplateEngine.DEFAULT); 
 		
+		assertNotEquals(result, compare);  
 		
-		
+		// Shows that ${name surname} does not act as boundary for the two templates name & surname?????? TODO 
+
 		
 	}
 	
