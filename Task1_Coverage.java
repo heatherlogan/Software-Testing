@@ -8,7 +8,7 @@ import st.EntryMap;
 import st.SimpleTemplateEngine;
 import st.TemplateEngine;
 
-public class Task1_Functional {
+public class Task1_Coverage {
 	
 	private EntryMap map;
 	private TemplateEngine engine;
@@ -516,6 +516,32 @@ public class Task1_Functional {
 	
 // Spec9: The engine processes one template at a time and attempts to match it against the keys of the
 // EntryMap entries until there is a match or the entry list is exhausted. 
+	
+	
+	/*------- TemplateEngine Tests For Part 2 -------*/
+	
+	@Test 
+	public void validMatchingModeTest() {
+		
+		map.store("name", "Bob");
+		
+		Integer matchingMode1 = null; 
+		Integer matchingMode2 = -1; 
+		Integer matchingMode3 = 8; 
+		String input = "Hey ${name}";
+		
+		String result1 = engine.evaluate(input, map, matchingMode1);
+		String result2 = engine.evaluate(input, map, matchingMode2); 
+		String result3 = engine.evaluate(input, map, matchingMode3);
+		
+		System.out.println(result1); 
+		System.out.println(result2); 
+		System.out.println(result3); 
+		
+		// How to show the matchingModes are not valid?
+		
+		
+	}
 	
 	
 	
