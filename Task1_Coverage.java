@@ -44,8 +44,108 @@ public class Task1_Coverage {
 		assertEquals(result2, expected); 
 		
 	}
-
 	
+	@Test
+	public void tEnginedoubledollar() {
+		map.store("name", "Adam");
+		map.store("surname", "Dykes");
+		map.store("age", "29");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "Hello, $$$${name}, is your age ${age}";
+		String expected = "Hello, $$$Adam, is your age 29";
+		String result = engine.evaluate(input, map, matchingMode);
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void tEngineDollarBracketBracket1() {
+		map.store("{name", "Adam");
+		map.store("surname", "Dykes");
+		map.store("age", "29");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "Hello, ${{name}";
+		String expected = "Hello, Adam";
+		String result = engine.evaluate(input, map, matchingMode);
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void tEngineDollarBracketBracket2() {
+		// shows it doesn't match "name"
+		map.store("name", "Adam");
+		map.store("surname", "Dykes");
+		map.store("age", "29");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "Hello, ${{name}";
+		String expected = "Hello, ${{name}";
+		String result = engine.evaluate(input, map, matchingMode);
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void tEngineRandom() {
+		// may add no coverage
+		map.store("greeting", "Hello");
+		map.store("name", "Adam");
+		map.store("HelloAdam", "Hello Adam");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "${${greeting}${name}}";
+		String result = engine.evaluate(input, map, matchingMode);
+		String expected = "Hello Adam";
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void tEngineRandom2() {
+		map.store("greeting", "Hello");
+		map.store("name", "Adam");
+		map.store("Hello Adam", "Hello Adam");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "${${greeting} ${name}}";
+		String result = engine.evaluate(input, map, matchingMode);
+		String expected = "Hello Adam";
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void tEngineDollarCloseBracket() {
+		// dissatisfies condition if (!templateCandidates.isEmpty())
+		map.store("greeting", "Hello");
+		map.store("name", "Adam");
+		map.store("Hello Adam", "Hello Adam");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "$}greeting}";
+		String result = engine.evaluate(input, map, matchingMode);
+		String expected = "$}greeting}";
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void tEngineDollarEmptyTemplate() {
+		map.store(" ", "");
+		map.store("surname", "Dykes");
+		map.store("age", "29");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "Hello${}";
+		String result = engine.evaluate(input, map, matchingMode);
+		String expected = "Hello${}";
+		assertEquals(result, expected);
+	}
 	
 	
 	
