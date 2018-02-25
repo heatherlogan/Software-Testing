@@ -8,7 +8,7 @@ import st.SimpleTemplateEngine;
 import st.TemplateEngine;
 
 public class Task1_Coverage {
-
+	//
 	private EntryMap map;
 	private TemplateEngine engine;
 	private SimpleTemplateEngine simpleEngine;
