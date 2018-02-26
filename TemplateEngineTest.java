@@ -9,9 +9,7 @@ import st.SimpleTemplateEngine;
 public class TemplateEngineTest {
 
     private EntryMap map;
-
     private TemplateEngine engine;
-    
     private SimpleTemplateEngine simpleEngine;
     
     @Before

@@ -43,10 +43,11 @@ public class Task1_Functional {
 
 	// Spec2: Replace value string can't be null
 	@Test
-	public void entryStoreSpec2() {
+	public void entryStoreSpec2null() {
 		thrown.expect(RuntimeException.class);
 		map.store("name", null);
 	}
+
 
 	// Spec3: Entries are ordered and follow order they appear in program
 	@Test
@@ -56,8 +57,7 @@ public class Task1_Functional {
 		map.store("NAME", "Adam");
 
 		// Patterns are not equal originally but are when case_insensititve
-		// applied
-		// So Bob is added first
+		// applied so Bob is added first
 
 		String expected = "Order: Bob Bob";
 		Integer matchingMode = TemplateEngine.CASE_INSENSITIVE;
@@ -69,15 +69,15 @@ public class Task1_Functional {
 		assertEquals(expected2, result2);
 	}
 
-	// TODO: might be repeating order tests
 	// Spec4: Entries that exist cannot be stored again.
 	@Test
-	public void entryStoreSpec4overwrite() { // Tests Adam doesn't overwrite Bob
+	public void entryStoreSpec4overwrite() { 
 
 		map.store("name", "Bob");
 		map.store("name", "Adam");
 		map.store("surname", "Smith");
 
+		// Tests Adam doesn't overwrite Bob
 		String expected = "Hello Bob Smith";
 		Integer matchingMode = TemplateEngine.DEFAULT;
 		String result = engine.evaluate("Hello ${name} ${SURNAME}", map, matchingMode);
@@ -86,17 +86,18 @@ public class Task1_Functional {
 	}
 
 	@Test
-	public void entryStoreSpec4store() { // Tests second entry is not stored.
+	public void entryStoreSpec4duplicateStored() {
 		map.store("name", "Adam");
 		map.store("name", "Adam");
 
+		// Shows that duplicate is not stored
 		int mapSize = map.getEntries().size();
 		assertEquals(mapSize, 1);
 	}
 
 	/*---------- EntryMap.delete() ----------*/
 	
-// Spec1: Template is not NUll or Empty
+	// Spec1: Template is not NUll or Empty
 	@Test 
 	public void entryDeleteSpec1empty() {
 		thrown.expect(RuntimeException.class);
@@ -108,9 +109,9 @@ public class Task1_Functional {
 		map.delete(null);
 	}
 	
-// Spec2: After deleting a pair, other entries remain ordered 
+	// Spec2: After deleting a pair, other entries remain ordered 
 	@Test
-	public void entryDeleteSpec2a() {
+	public void entryDeleteSpec2_firstStaysOrdered() {
 		
 		map.store("name", "Bob");
 		map.store("NAME", "Adam");
@@ -125,21 +126,20 @@ public class Task1_Functional {
 		assertEquals(result, expected);  
 	}
 	@Test
-	public void entryDeleteSpec2b() {
+	public void entryDeleteSpec2_movesInOrder() {
 		
 		map.store("name", "Bob");
 		map.store("NAME", "Adam");
 		map.store("Name", "John");
 		
+		//Shows when Bob is removed, Adam takes first place position so remains ordered
 		map.delete("name");
 		String expected = "Adam"; 
 		String result = engine.evaluate("${name}", map, TemplateEngine.CASE_INSENSITIVE); 
-		
-		//Shows when Bob is removed, Adam takes first place position so remains ordered
 		assertEquals(result, expected);  
 	}
 	
-// Spec3: Only existing value pair can be deleted otherwise nothing happens
+	// Spec3: Only existing value pair can be deleted otherwise nothing happens
 	
 	@Test
 	public void entryDeleteSpec3() {
@@ -149,19 +149,18 @@ public class Task1_Functional {
 		Integer matchingMode = TemplateEngine.DEFAULT; 
 		String result1 = engine.evaluate("Hello ${name} ${surname}", map, matchingMode); 
 		
-		map.delete("middlename"); // Deleting template not in map
+		// Deleting template not in map results in same string
 		
-		String result2 = engine.evaluate("Hello ${name} ${surname}", map, matchingMode); 
-		
-		assertEquals(result1, result2); // Tests return string remains the same
+		map.delete("middlename"); 
+		String result2 = engine.evaluate("Hello ${name} ${surname}", map, matchingMode);
+		assertEquals(result1, result2); 
 	}
 	
 	/*---------- EntryMap.update() ----------*/
 	
-// Spec1: Template is not null or empty
+	// Spec1: Template is not null or empty
 	@Test (expected = RuntimeException.class)
 	public void entryUpdateSpec1empty() {
-		// thrown.expect(RuntimeException.class);
 		map.update("", "Bob");
 	}
 	@Test 
@@ -169,14 +168,14 @@ public class Task1_Functional {
 		thrown.expect(RuntimeException.class);
 		map.update(null, "Bob");
 	}
-// Spec2: New replace value string is not NULL
+	// Spec2: New replace value string is not NULL
 	@Test 
 	public void entryUpdateSpec2null() {
 		thrown.expect(RuntimeException.class);
 		map.update("name", null);
 	}
 
-// Spec3: Updating does not change existing order
+	// Spec3: Updating does not change existing order
 	@Test
 	public void entryUpdateSpec3() {
 		
@@ -199,30 +198,36 @@ public class Task1_Functional {
 	
 // Spec4: Only existing value pair can be updated
 	@Test
-	public void entryUpdateSpec4a() {// Shows update does nothing to length of list when on nonexistent template
+	public void entryUpdateSpec4_updateExisting() {
+		
 		map.store("name", "Bob");
-		map.update("age", "20");
-		int len = map.getEntries().size(); 
-
+		int len = map.getEntries().size();
+		
+		// Shows update does nothing to length of list when on nonexistent template
+		
 		map.update("age", "20");
 		int len2 = map.getEntries().size(); 
+		
 		assertEquals(len, len2); 
 	}
 	
 	@Test
-	public void entryUpdateSpec4b() { // Shows update does nothing to empty list
+	public void entryUpdateSpec4_updateEmpty() { 
 		map.update("age", "24");
+		
+		// Shows update does nothing to empty list
+		
 		int len = map.getEntries().size(); 
 		assertEquals(len, 0);
 	}
 	
 	/*-------------------- TemplateEngine Class Tests --------------------*/
 	
-// Spec1: If template string is NULL or empty, 
-	// then unchanged template string is returned
+// Spec1: If template string is NULL or empty, then unchanged template string is returned
 	
 	@Test
-	public void tEngineSpec1a() { // Tests that no exception is thrown on null or empty string
+	public void tEngineSpec1_nullEmpty() { 
+		// Tests that no exception is thrown on null or empty string
 	    try {
 	    	map.store("name", "Bob");
 	    	engine.evaluate("", map, TemplateEngine.DEFAULT); 
@@ -231,8 +236,9 @@ public class Task1_Functional {
 	    }
 	}
 	@Test
-	public void tEngineSpec1b() {
+	public void tEngineSpec1_nullTemplate() {
 	    try {
+	    	// Tests no runtime exception is returned when a null template passed in 
 	    	map.store("name", "Bob");
 	    	engine.evaluate(null, map, TemplateEngine.DEFAULT); 
 	    } catch (RuntimeException e){
@@ -240,7 +246,7 @@ public class Task1_Functional {
 	    }
 	}		
 	@Test
-	public void tEngineSpec1c() {
+	public void tEngineSpec1_emptyMap() {
 		map.store("name", "Bob");
 		String expected = ""; 
 		String result = engine.evaluate("", map, TemplateEngine.DEFAULT); 
@@ -257,11 +263,10 @@ public class Task1_Functional {
 		assertEquals(result,expected); 
 	}
 
-// Spec2: If EntryMap is NULL or empty then unchanged template string 
-	// is returned
+// Spec2: If EntryMap is NULL or empty then unchanged template string is returned
 
 	@Test 
-	public void tEngineSpec2a() { 
+	public void tEngineSpec2_noException() { 
 	    try {
 	    	EntryMap map2 = null; 
 	    String template = "Hello ${name}";
@@ -272,8 +277,10 @@ public class Task1_Functional {
 	    }
 	}
 	
-	@Test   // tests template is returned unchanged with null map
-	public void tEngineSpec2b() { 
+	@Test 
+	public void tEngineSpec2_nullMap() { 
+		
+		// tests template is returned unchanged with null map
 		EntryMap map2 = null; 
 		String expected = "Hello ${name}"; 
 		String result = engine.evaluate("Hello ${name}", map2, TemplateEngine.DEFAULT); 
@@ -281,10 +288,20 @@ public class Task1_Functional {
 		assertEquals(result,expected); 
 	}
 	
+	@Test
+	public void tEngineSpec2_emptyMap() {
+		
+		String expected = "Hello ${name}"; 
+		String result = engine.evaluate("Hello ${name}", map, TemplateEngine.DEFAULT); 
+		
+		assertEquals(result,expected); 
+		
+	}
+	
 // Spec3:
 	// If matching mode = 0 or NULL or default, KEEP_UNMATCHED, CASE_INSENSITIVE, ACCURATE_SEARCH is used
 	@Test
-	public void tEngineSpec3a() {
+	public void tEngineSpec3_default() {
 		
 		map.store("t itle", "Mr.");
 		map.store("name", "Bob");
@@ -310,7 +327,7 @@ public class Task1_Functional {
 	
 	// if matching mode = DELETE_UNMACHED, then DELETE_UNMATCHED, CASE_INSENSITIVE, ACCURATE_SEARCH is used
 	@Test
-	public void tEngineSpec3b() {
+	public void tEngineSpec3_deleteUnmatched() {
 		
 		map.store("t itle", "Mr.");
 		map.store("name", "Bob");
@@ -331,7 +348,7 @@ public class Task1_Functional {
 	// If matchingMode = CASE_SENSITIVE | BLUR_SEARCH, then KEEP_UNMATCHED, CASE_SENSITVE, BLUR_SEARCH is used
 	
 	@Test
-	public void tEngineSpec3c() {
+	public void tEngineSpec3_caseSensitive() {
 		
 		map.store("t itle", "Mr.");
 		map.store("name", "Bob");
@@ -355,7 +372,7 @@ public class Task1_Functional {
 	
 	// Test matching. DELETE_UNMATCHED is non-default
 	@Test    
-	public void tEngineSpec3matching() {
+	public void tEngineSpec3_contradictoryMatch() {
 		
 		map.store("name", "Bob");
 		
@@ -371,7 +388,7 @@ public class Task1_Functional {
 	
 	//Testing case sensitivity. case sensitive is non-default
 	@Test
-	public void tEngineSpec3casesens() {
+	public void tEngineSpec3_contradictoryCase() {
 		
 		map.store("Name", "Bob"); 
 		map.store("name","Bobby"); 
@@ -387,7 +404,7 @@ public class Task1_Functional {
 	}
 	//Testing search. Blur search is non default
 	@Test
-	public void tEngineSpec3blursearch() {
+	public void tEngineSpec3_contradictorySearch() {
 		
 		map.store("na me", "Bob"); 
 		map.store("name","Bobby"); 
@@ -423,31 +440,36 @@ public class Task1_Functional {
 // character does not affect the result
 	
 	@Test
-	public void tEngineSpec5spacetab() {	
+	public void tEngineSpec5_space() {	
+			
+		map.store("middle name", "Peter");
+			
+		Integer matchingMode = engine.BLUR_SEARCH;		
+	
+		String input = "${middlename}, ${middle name}"; //no space, 2 spaces, 1 tab
+		String expectedBlur = "Peter, Peter"; 
+			
+		String result1 = engine.evaluate(input, map, matchingMode);
+		assertEquals(expectedBlur, result1); 
+	}
+	@Test
+	public void tEngineSpec5_tab() {	
 			
 		map.store("middle name", "Peter");
 			
 		Integer matchingMode = engine.BLUR_SEARCH; 
-		Integer matchingMode2 = engine.ACCURATE_SEARCH; 		
-	
-		String input = "${middlename}, ${middle name}, ${middle		name}"; //no space, 2 spaces, 1 tab
-		String expectedBlur = "Peter, Peter, Peter"; 
-		String expectedAccurate = "${middlename}, Peter, ${middle		name}";
-			
+		String input =  "${middle		name}"; //tab
+		String expectedBlur = "Peter"; 
 		String result1 = engine.evaluate(input, map, matchingMode);
-		String result2 = engine.evaluate(input,map, matchingMode2); 
 			
 		assertEquals(expectedBlur, result1); 
-		assertEquals(expectedAccurate, result2); 
 	}
 	
 	@Test
-	public void tEngineSpec5newline() {	
-			
+	public void tEngineSpec5_newline() {	
+		// Newline is ignored and middle name matched
 		map.store("middle name", "Peter");
-			
 		Integer matchingMode = engine.BLUR_SEARCH; 
-			
 		String input = "${middle"
 					+ "name}"; 
 		String result = engine.evaluate(input, map, matchingMode);
@@ -461,7 +483,7 @@ public class Task1_Functional {
 // matching against entries
 
 	@Test 
-	public void tEngineSpec6() {
+	public void tEngineSpec6_caseInsesitive() {
 		
 		map.store("Name", "Adam"); 
 		map.store("NAME", "Bob");
@@ -479,7 +501,7 @@ public class Task1_Functional {
 	
 	@Test 
 	public void tEngineSpec7() {
-		
+		// Shows that ${name surname} does not act as boundary for the two templates name & surname
 		map.store("name", "Bob");
 		map.store("surname", "Smith");
 		
@@ -489,10 +511,8 @@ public class Task1_Functional {
 		
 		assertNotEquals(result, compare);  
 		
-		// Shows that ${name surname} does not act as boundary for the two templates name & surname?????? TODO
-	}
+		}
 	
-
 // Spec8: In a template string, different templates are ordered according to their length, 
 // the shorter template precedes
 	
@@ -516,7 +536,6 @@ public class Task1_Functional {
 	
 // Spec9: The engine processes one template at a time and attempts to match it against the keys of the
 // EntryMap entries until there is a match or the entry list is exhausted. 
-	
 	
 	
 	
@@ -607,7 +626,7 @@ public class Task1_Functional {
 	// Spec4: If value string is null or empty, unchanged template string is
 	// returned
 
-	// Spec4-1 When pattern (2nd argument) is a string with no #, all occurences
+	// Spec4-1 When pattern (2nd argument) is a string with no #, all occurrences
 	// are replaced.
 	@Test
 	public void sEngineSpec4_1() {
@@ -622,7 +641,8 @@ public class Task1_Functional {
 		assertEquals(result, expected);
 	}
 
-	// Spec4-2
+	// Spec4-2 Replacing specific occurences 
+	
 	@Test
 	public void sEngineSpec4_2a() {
 		// The 3rd David Exists.
@@ -653,7 +673,7 @@ public class Task1_Functional {
 
 	@Test
 	public void sEngineSpec4_2c() {
-		// No David exists. Possibly not needed
+		// No David exists.
 		String template = "This is a sentence.";
 		String pattern = "David#3";
 		String value = "Peter";
@@ -665,7 +685,7 @@ public class Task1_Functional {
 		assertEquals(result, expected);
 	}
 
-	// Spec4-3
+	// Spec4-3 Multiple hashes are treated as single hash
 	@Test
 	public void sEngineSpec4_3() {
 		String template = "Hi, my name is David#. David is my forename.";
@@ -679,6 +699,7 @@ public class Task1_Functional {
 		assertEquals(result, expected);
 	}
 
+	// Spec4-4 Multiple hashes on specific replacements work correctly
 	@Test
 	public void sEngineSpec4_4() {
 		String template = "Hi, my name is David#. David# is my forename.";
@@ -692,6 +713,7 @@ public class Task1_Functional {
 		assertEquals(result, expected);
 	}
 
+	// Spec4-5 Hash placed within a word means only preceding characters are used as replacement
 	@Test
 	public void sEngineSpec4_5() {
 		String template = "Hi, David, my name is David. David is my forename.";
@@ -704,8 +726,8 @@ public class Task1_Functional {
 
 		assertEquals(result, expected);
 	}
-
-	// Spec5
+	
+	// Spec5: the default matching mode is not case sensitive and the pattern can be either a word or part of the word. 
 	@Test
 	public void sEngineSpec5DefaultCaseA() {
 		// Tests that this matchingmode is not case sensitive
@@ -844,9 +866,9 @@ public class Task1_Functional {
 		assertEquals(result, expected);
 	}
 
-	// Spec6
+	// Spec6 - after a pattern string is replaces the program continues to match pattern from the end of the replaced value
 	@Test
-	public void sEngineSpec6() { //
+	public void sEngineSpec6() { 
 		String template = "Hi, my name is David. David is my forename.";
 		String pattern = "David";
 		String value = "DavidDavid";
@@ -857,6 +879,4 @@ public class Task1_Functional {
 
 		assertEquals(result, expected);
 	}
-	// ^How to deal with infinite recursion?
-
 }

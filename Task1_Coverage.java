@@ -24,7 +24,58 @@ public class Task1_Coverage {
 	public ExpectedException thrown = ExpectedException.none();
 
 	/*-------------------- EntryMap Class Tests --------------------*/
+	
+	// Tests for equals method (TODO doesn't add any coverage take out)
+	
+	@Test 
+	public void entryMapEqualsObj() {
+		EntryMap m1 = map; 
+		Boolean result = map == m1; 
+		Boolean expected = map.equals(m1); 
+		assertEquals(result, expected); 
+	}
 
+	@Test
+	public void entryMapEqualsNull() {
+		EntryMap m2 = null;
+		Boolean result = map.equals(m2); 
+		Boolean expected = map.equals(null); 
+		assertEquals(result, expected);
+	}
+	
+	@Test
+	public void entryMapEqualsNotNull() {
+		
+		map.store("name", "adam");
+		Boolean result = map != null; 
+		Boolean expected = map.equals(null); 
+		assertEquals(result, true);
+	}
+
+	@Test 
+	public void entryMapEqualsClass() {
+		EntryMap m1 = new EntryMap(); 
+		EntryMap m2 = new EntryMap(); 
+		
+		m1.store("name", "Bob");
+		m1.store("name", "Adam");
+		
+		Boolean result = (m1.getClass() != m2.getClass()); 
+		Boolean expected = m1.equals(m2); 
+		
+		assertEquals(result, expected); 
+	}
+	
+	@Test 
+	public void entryMapEqualsNotClass() {
+		EntryMap m1 = map; 
+		
+		Boolean result = (m1.getClass() != map.getClass()); 
+		Boolean expected = m1.equals(map); 
+		assertNotEquals(result, expected); 
+	}
+	
+	
 	@Test
 	public void entryUpdateSpec2emptysecondargument() {
 		map.store("name", "Bob");
@@ -34,12 +85,14 @@ public class Task1_Coverage {
 	}
 
 	/*-------------------- TemplateEngine Class Tests --------------------*/
+	
+
+	
 
 	@Test
 	public void tEngine_isMatchingModeValid() {
 		map.store("name", "Bob");
-		// if machingMode is invalid < 0 or > 7 it is assigned
-		// Integer.valueOf(O) (default)
+		// if machingMode is invalid < 0 or > 7 it is assigned Integer.valueOf(O) (default)
 
 		Integer expectedMatchingMode = Integer.valueOf(0);
 		Integer matchingMode1 = -2;
@@ -51,7 +104,6 @@ public class Task1_Coverage {
 
 		assertEquals(result1, expected);
 		assertEquals(result2, expected);
-
 	}
 
 	@Test
@@ -66,7 +118,6 @@ public class Task1_Coverage {
 		String expected = "Hello, $$$Adam, is your age 29";
 		String result = engine.evaluate(input, map, matchingMode);
 		assertEquals(result, expected);
-
 	}
 
 	@Test
@@ -140,10 +191,12 @@ public class Task1_Coverage {
 		String result = engine.evaluate(input, map, matchingMode);
 		String expected = "$}greeting}";
 		assertEquals(result, expected);
+		
 	}
 
 	@Test
 	public void tEngineDollarEmptyTemplate() {
+		
 		map.store(" ", "");
 		map.store("surname", "Dykes");
 		map.store("age", "29");
@@ -355,7 +408,6 @@ public class Task1_Coverage {
 
 		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
 		String expected = "Hello Peter";
-		// System.out.println(result);
 		assertEquals(result, expected);
 	}
 
@@ -368,14 +420,12 @@ public class Task1_Coverage {
 
 		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
 		String expected = "HelloDavid";
-		// System.out.println(result);
 		assertEquals(result, expected);
 	}
 
 	@Test
 	public void sEngine_Random3() {
-		// Satisfies a branch of
-		// charIndex!=0 &&
+		// Satisfies a branch of charIndex!=0 &&
 		// Character.isLetterOrDigit(originalText.charAt(charIndex-1))
 		String template = "David";
 		String pattern = "David";
@@ -384,7 +434,6 @@ public class Task1_Coverage {
 
 		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
 		String expected = "Peter";
-		// System.out.println(result);
 		assertEquals(result, expected);
 	}
 
