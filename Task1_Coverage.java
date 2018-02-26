@@ -25,26 +25,35 @@ public class Task1_Coverage {
 
 	/*-------------------- EntryMap Class Tests --------------------*/
 
+	@Test
+	public void entryUpdateSpec2emptysecondargument() {
+		map.store("name", "Bob");
+		map.update("name", "");
+		String result = engine.evaluate("${name}", map, 0);
+		assertEquals("", result);
+	}
+
 	/*-------------------- TemplateEngine Class Tests --------------------*/
 
-	@Test 
+	@Test
 	public void tEngine_isMatchingModeValid() {
 		map.store("name", "Bob");
-		// if machingMode is invalid < 0 or > 7 it is assigned Integer.valueOf(O) (default)
-		
-		Integer expectedMatchingMode = Integer.valueOf(0); 
-		Integer matchingMode1 = -2; 
-		Integer matchingMode2 = 8; 
-		
+		// if machingMode is invalid < 0 or > 7 it is assigned
+		// Integer.valueOf(O) (default)
+
+		Integer expectedMatchingMode = Integer.valueOf(0);
+		Integer matchingMode1 = -2;
+		Integer matchingMode2 = 8;
+
 		String result1 = engine.evaluate("Hey ${name}", map, matchingMode1);
 		String result2 = engine.evaluate("Hey ${name}", map, matchingMode2);
 		String expected = engine.evaluate("Hey ${name}", map, expectedMatchingMode);
-	
-		assertEquals(result1, expected); 
-		assertEquals(result2, expected); 
-		
+
+		assertEquals(result1, expected);
+		assertEquals(result2, expected);
+
 	}
-	
+
 	@Test
 	public void tEnginedoubledollar() {
 		map.store("name", "Adam");
@@ -146,10 +155,33 @@ public class Task1_Coverage {
 		String expected = "Hello${}";
 		assertEquals(result, expected);
 	}
-	
-	
-	
-	
+
+	@Test
+	public void tEngineRandom3() {
+		map.store("aaa", "Adam");
+		map.store("a", "John");
+		map.store("aa", "Dykes");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "${aaa}${a}${aa}${aaa}${a}";
+		String result = engine.evaluate(input, map, matchingMode);
+		String expected = "AdamJohnDykesAdamJohn";
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void tEngineReplaceTemplateAtVeryEnd() {
+		map.store("name", "Bob");
+
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String input = "Hello ${name}";
+		String result = engine.evaluate(input, map, matchingMode);
+		String expected = "Hello Bob";
+		assertEquals(result, expected);
+	}
+
 	/*-------------------- SimpleTemplateEngine Class Tests --------------------*/
 	@Test
 	public void sEngine_InvalidMatchingMode1() {
@@ -306,6 +338,52 @@ public class Task1_Coverage {
 
 		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
 		String expected = "Hi, my name Davidis. Peter is my forename.";
+		// System.out.println(result);
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void sEngine_Random() {
+		// Satisfies a branch of
+		// if (charIndex + patternLength < originalText.length() &&
+		// Character.isLetterOrDigit(originalText.charAt(charIndex +
+		// patternLength)))
+		String template = "Hello David";
+		String pattern = "David";
+		String value = "Peter";
+		Integer matchingMode = SimpleTemplateEngine.WHOLE_WORLD_SEARCH;
+
+		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
+		String expected = "Hello Peter";
+		// System.out.println(result);
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void sEngine_Random2() {
+		String template = "HelloDavid";
+		String pattern = "David";
+		String value = "Peter";
+		Integer matchingMode = SimpleTemplateEngine.WHOLE_WORLD_SEARCH;
+
+		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
+		String expected = "HelloDavid";
+		// System.out.println(result);
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void sEngine_Random3() {
+		// Satisfies a branch of
+		// charIndex!=0 &&
+		// Character.isLetterOrDigit(originalText.charAt(charIndex-1))
+		String template = "David";
+		String pattern = "David";
+		String value = "Peter";
+		Integer matchingMode = SimpleTemplateEngine.WHOLE_WORLD_SEARCH;
+
+		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
+		String expected = "Peter";
 		// System.out.println(result);
 		assertEquals(result, expected);
 	}
