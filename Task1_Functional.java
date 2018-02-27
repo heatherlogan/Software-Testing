@@ -51,7 +51,7 @@ public class Task1_Functional {
 
 	// Spec3: Entries are ordered and follow order they appear in program
 	@Test
-	public void entryStoreSpec3() {
+	public void entryStoreSpec3sensitive() {
 
 		map.store("name", "Bob");
 		map.store("NAME", "Adam");
@@ -63,10 +63,20 @@ public class Task1_Functional {
 		Integer matchingMode = TemplateEngine.CASE_INSENSITIVE;
 		String result = engine.evaluate("Order: ${name} ${NAME}", map, matchingMode);
 		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void entryStoreSpec3insensitive() {
 
-		String expected2 = "Order: Bob Adam";
-		String result2 = engine.evaluate("Order: ${name} ${NAME}", map, TemplateEngine.CASE_SENSITIVE);
-		assertEquals(expected2, result2);
+		map.store("name", "Bob");
+		map.store("NAME", "Adam");
+
+		// Patterns are not equal originally but are when case_insensititve
+		// applied so Bob is added first
+
+		String expected = "Order: Bob Adam";
+		String result = engine.evaluate("Order: ${name} ${NAME}", map, TemplateEngine.CASE_SENSITIVE);
+		assertEquals(expected, result);
 	}
 
 	// Spec4: Entries that exist cannot be stored again.
@@ -307,23 +317,48 @@ public class Task1_Functional {
 		map.store("name", "Bob");
 		map.store("surname", "Smith");
 		
-		Integer matchingMode = 0; 
-		Integer matchingMode2 = null; 
-		Integer matchingMode3 = TemplateEngine.DEFAULT; 
-		
 		//String examples which shows keep unmatched, case insensitive and accurate search are used
+
+		Integer matchingMode = TemplateEngine.DEFAULT; 
+		String input = "Full Name: ${title} ${NAME} ${middlename} ${SURNAME}"; 
+		String expected = "Full Name: ${title} Bob ${middlename} Smith"; 
+		
+		String result = engine.evaluate(input, map, matchingMode); 
+		assertEquals(result, expected); 		
+	}
+	@Test
+	public void tEngineSpec3_0() {
+		
+		map.store("t itle", "Mr.");
+		map.store("name", "Bob");
+		map.store("surname", "Smith");
+		
+		Integer matchingMode = 0;
 		
 		String input = "Full Name: ${title} ${NAME} ${middlename} ${SURNAME}"; 
 		String expected = "Full Name: ${title} Bob ${middlename} Smith"; 
 		
-		String result1 = engine.evaluate(input, map, matchingMode); 
-		String result2 = engine.evaluate(input, map, matchingMode2); 
-		String result3 = engine.evaluate(input, map, matchingMode3); 
+		String result = engine.evaluate(input, map, matchingMode); 
 		
-		assertEquals(result1, expected); 
-		assertEquals(result2, expected); 
-		assertEquals(result3, expected); 		
+		assertEquals(result, expected); 		
 	}
+	@Test
+	public void tEngineSpec3_null() {
+		
+		map.store("t itle", "Mr.");
+		map.store("name", "Bob");
+		map.store("surname", "Smith");
+		
+		Integer matchingMode = null; 
+		
+		String input = "Full Name: ${title} ${NAME} ${middlename} ${SURNAME}"; 
+		String expected = "Full Name: ${title} Bob ${middlename} Smith"; 
+		
+		String result = engine.evaluate(input, map, matchingMode); 
+		
+		assertEquals(result, expected); 	
+	}
+	
 	
 	// if matching mode = DELETE_UNMACHED, then DELETE_UNMATCHED, CASE_INSENSITIVE, ACCURATE_SEARCH is used
 	@Test
@@ -476,8 +511,6 @@ public class Task1_Functional {
 			
 		assertEquals("Peter", result); 
 	}
-	
-
 	
 // Spec6: When CASE_INSENSITIVE is enabled, letter case is not taken in consideration when 
 // matching against entries
