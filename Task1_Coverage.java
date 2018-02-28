@@ -85,9 +85,6 @@ public class Task1_Coverage {
 	}
 
 	/*-------------------- TemplateEngine Class Tests --------------------*/
-	
-
-	
 
 	@Test
 	public void tEngine_isMatchingModeValid() {
@@ -108,6 +105,7 @@ public class Task1_Coverage {
 
 	@Test
 	public void tEnginedoubledollar() {
+		//tests results when there are multiple dollar signs in the template string
 		map.store("name", "Adam");
 		map.store("surname", "Dykes");
 		map.store("age", "29");
@@ -122,6 +120,7 @@ public class Task1_Coverage {
 
 	@Test
 	public void tEngineDollarBracketBracket1() {
+		//tests if 
 		map.store("{name", "Adam");
 		map.store("surname", "Dykes");
 		map.store("age", "29");
@@ -196,7 +195,7 @@ public class Task1_Coverage {
 
 	@Test
 	public void tEngineDollarEmptyTemplate() {
-		
+		// may add
 		map.store(" ", "");
 		map.store("surname", "Dykes");
 		map.store("age", "29");
@@ -211,6 +210,7 @@ public class Task1_Coverage {
 
 	@Test
 	public void tEngineRandom3() {
+		//A random test
 		map.store("aaa", "Adam");
 		map.store("a", "John");
 		map.store("aa", "Dykes");
@@ -261,7 +261,7 @@ public class Task1_Coverage {
 		String pattern = "DAVID";
 		String value = "Peter";
 		Integer matchingMode = -1;
-		// System.out.println(simpleEngine.caseSensative(SimpleTemplateEngine.));
+
 		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
 		String expected = "Hi, my name isPeter. Peter is my forename.";
 
@@ -328,8 +328,7 @@ public class Task1_Coverage {
 
 	@Test
 	public void sEngineSpec4_HashFollowedByNothing() {
-		// Everything after the hash is dropped including second hash
-		// This seems to just return the original string.
+		// David# does not match with David# in template string as # is dropped 
 		String template = "Hi, my name is David#. David# is my forename.";
 		String pattern = "David#";
 		String value = "Peter";
@@ -342,8 +341,7 @@ public class Task1_Coverage {
 
 	@Test
 	public void sEngineSpec4_HashFollowedByHash() {
-		// Everything after the hash is dropped including second hash
-		// This seems to just return the original string.
+		// ## is treated as #
 		String template = "Hi, my name is David#. David## is my forename.";
 		String pattern = "David##";
 		String value = "Peter";
@@ -356,8 +354,8 @@ public class Task1_Coverage {
 
 	@Test
 	public void sEngineSpec4_HashFollowedByMultiDigit() {
-		// Everything after the hash is dropped including second hash
-		// This seems to just return the original string.
+		// the pattern David#11 will remove the 11th David as expected and not the
+		//first then drop the second "1"
 		String template = "DavidDavidDavidDavidDavidDavidDavidDavidDavidDavidDavid";
 		String pattern = "David#11";
 		String value = "Peter";
@@ -391,7 +389,6 @@ public class Task1_Coverage {
 
 		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
 		String expected = "Hi, my name Davidis. Peter is my forename.";
-		// System.out.println(result);
 		assertEquals(result, expected);
 	}
 
@@ -449,6 +446,4 @@ public class Task1_Coverage {
 		String expected = "David";
 		assertEquals(result, expected);
 	}
-
-
 }
