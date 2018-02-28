@@ -656,8 +656,7 @@ public class Task1_Functional {
 
 		assertEquals(result, expected);
 	}
-	// Spec4: If value string is null or empty, unchanged template string is
-	// returned
+	// Spec4: #n is a special value meaning only the nth match shall be replaces with the pattern
 
 	// Spec4-1 When pattern (2nd argument) is a string with no #, all occurrences
 	// are replaced.
@@ -793,7 +792,6 @@ public class Task1_Functional {
 	@Test
 	public void sEngineSpec5DefaultSeparationA() {
 		// Tests that this matchingmode is not seperation character-sensitive
-		// Separate tests for each non alphanumeric character? *delete_later*
 		String template = "Hi, my name isDavid. David is my forename.";
 		String pattern = "David";
 		String value = "Peter";
@@ -808,7 +806,6 @@ public class Task1_Functional {
 	@Test
 	public void sEngineSpec5DefaultSeparationB() {
 		// Tests that this matchingmode is not seperation character-sensitive
-		// Separate tests for each non alphanumeric character? *delete_later*
 		String template = "Hi, my name is David. David is my forename.";
 		String pattern = "David";
 		String value = "Peter";
