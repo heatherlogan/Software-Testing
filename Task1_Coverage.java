@@ -436,5 +436,19 @@ public class Task1_Coverage {
 		String expected = "Peter";
 		assertEquals(result, expected);
 	}
+	
+	@Test
+	public void sEngine_Only_Hash() {
+		// Satisfies branch if(!isTextValid(pattern))
+		String template = "David";
+		String pattern = "#";
+		String value = "Peter";
+		Integer matchingMode = SimpleTemplateEngine.DEFAULT_MATCH;
+
+		String result = simpleEngine.evaluate(template, pattern, value, matchingMode);
+		String expected = "David";
+		assertEquals(result, expected);
+	}
+
 
 }
