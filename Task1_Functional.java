@@ -913,3 +913,5 @@ public class Task1_Functional {
 		assertEquals(result, expected);
 	}
 }
+
+// final version
