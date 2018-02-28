@@ -656,8 +656,7 @@ public class Task1_Functional {
 
 		assertEquals(result, expected);
 	}
-	// Spec4: If value string is null or empty, unchanged template string is
-	// returned
+	// Spec4: #n means nth occurence of pattern is replaced
 
 	// Spec4-1 When pattern (2nd argument) is a string with no #, all occurrences
 	// are replaced.
@@ -718,7 +717,7 @@ public class Task1_Functional {
 		assertEquals(result, expected);
 	}
 
-	// Spec4-3 Multiple hashes are treated as single hash
+	// Spec4-3 doubles of hashes are treated as single hash
 	@Test
 	public void sEngineSpec4_3() {
 		String template = "Hi, my name is David#. David is my forename.";
