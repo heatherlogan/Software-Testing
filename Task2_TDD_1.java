@@ -1,5 +1,5 @@
-import static org.junit.Assert.*;
 
+<<<<<<< HEAD
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -395,3 +395,5 @@ public class Task2_TDD_1 {
 	/*----------------------- Tests base year is there but X is invalid ----------------------*/
 
 }
+=======
+>>>>>>> c6e68e9be154af1155f87aa760986e44763504af
