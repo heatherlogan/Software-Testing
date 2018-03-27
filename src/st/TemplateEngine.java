@@ -246,6 +246,16 @@ public class TemplateEngine {
         }
         return updatedInstancedString;
     }
+    
+    
+    
+    public void handle_Year_Template() {
+    	 
+    	
+    	
+    }
+    
+    
 
     class Template {
         Integer startIndex;
@@ -304,7 +314,9 @@ public class TemplateEngine {
             return result;
         }
     }
-
+    
+   
+    
     class Result{
         String instancedString;
         Integer templatesReplaced;
