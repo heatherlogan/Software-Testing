@@ -393,6 +393,174 @@ public class Task2_TDD_1 {
 	
 
 	/*----------------------- Tests base year is there but X is invalid ----------------------*/
+	
+	
+	
+	
+		//////////////////////////////////////////////// More Tests 29/03/2018
+
+	@Test
+	public void x_multidigitnumberyearsAgo() {
+
+		map.store("year", "100 years ago");
+		String template = "I was born in ${year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in 1918";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void x_multidigitnumberinXyears() {
+
+		map.store("year", "in 10 years");
+		String template = "I was born in ${year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in 2028";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void yearsAgo_causes_negative_number() {
+
+		map.store("year", "2019 years ago");
+		String template = "I was born in ${year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in -1";// BC?
+		String result = engine.evaluate(template, map, matchingMode);
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void x_isspecialcharacter_inXyears() {
+
+		map.store("year", "in $ years");
+		String template = "I was born in ${year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in in $ years";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		System.out.println(expected + "\n" + result);
+
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void x_isspecialcharacter_yearsAgo() {
+
+		map.store("year", "$ years ago");
+		String template = "I was born in ${year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in $ years ago";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		System.out.println(expected + "\n" + result);
+
+		assertEquals(result, expected);
+	}
+
+	@Test
+	public void base_year_works_alone() {
+
+		map.store("base_year", "1990");
+		String template = "I was born in ${base_year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in 1990";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void base_year_works_blur_search() {
+
+		map.store("base_year", "1990");
+		String template = "I was born in ${base_   year}";
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
+
+		String expected = "I was born in 1990";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void base_year_works_case_sensitivity() {
+
+		map.store("base_year", "1990");
+		String template = "I was born in ${BASE_YEAR}";
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
+
+		String expected = "I was born in 1990";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void base_year_cant_be_decimal() {
+
+		map.store("base_year", "1990.0");
+		map.store("year", "2 years ago");
+
+		String template = "I was born in ${year} ${base_year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in 2016 1990.0";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		// System.out.println(expected + "\n" + result);
+
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void years_ago_cant_be_decimal() {
+
+		map.store("year", "2.0 years ago");
+
+		String template = "I was born ${year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born 2.0 years ago";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		assertEquals(result, expected);
+
+	}
+
+	@Test
+	public void inXyears_cant_be_decimal() {
+
+		map.store("year", "in 2.0 years");
+
+		String template = "I was born ${year}";
+		Integer matchingMode = TemplateEngine.DEFAULT;
+
+		String expected = "I was born in 2.0 years";
+		String result = engine.evaluate(template, map, matchingMode);
+
+		assertEquals(result, expected);
+
+	}
+	/////////////////////////////////////////////
+
 
 }
 =======
