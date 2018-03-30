@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import static org.junit.Assert.assertEquals;
 
+=======
+
+<<<<<<< HEAD
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -44,7 +49,11 @@ public class Task2_TDD_1 {
 		String expected = "I was born in 2016"; 
 		String result = engine.evaluate(template, map, matchingMode); 
 		
+<<<<<<< HEAD
 		//System.out.println(expected + "\n" + result); 
+=======
+		// System.out.println(expected + "\n" + result); 
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 		
 		assertEquals(expected, result); 
 		
@@ -67,6 +76,7 @@ public class Task2_TDD_1 {
 		assertEquals(expected, result); 
 	}
 	
+<<<<<<< HEAD
 	
 	@Test 
 	public void works_blurSearchMatching() {
@@ -120,6 +130,32 @@ public class Task2_TDD_1 {
 		
 		//System.out.println(result); 
 		assertEquals(expected, result) ;
+=======
+	@Test 
+	public void works_defaultMatching() {
+		map.store("year", "");
+	}
+	
+	@Test 
+	public void works_accurateSarchMatching() {
+		map.store("year", "");
+		
+	}
+	
+	@Test 
+	public void works_blurSearchMatching() {
+		map.store("year", "");
+		
+	}
+	@Test 
+	public void works_caseSensitiveMatching() {
+		map.store("year", "");
+		
+	}
+	@Test 
+	public void works_caseInsensitiveMatching() {
+		map.store("year", "");
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 		
 	}
 
@@ -186,7 +222,11 @@ public class Task2_TDD_1 {
 		String expected = "I was born in two years ago";
 		String result = engine.evaluate(template, map, matchingMode); 
 		
+<<<<<<< HEAD
 		// System.out.println(expected + "\n" + result); 
+=======
+		System.out.println(expected + "\n" + result); 
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 		
 		assertEquals(result, expected); 
 	}	
@@ -339,7 +379,11 @@ public class Task2_TDD_1 {
 	
 	/*----------------------- Tests when entryMap class contains base_year  ----------------------*/
 
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 	@Test 
 	public void baseyear_valid_YearsAgo() {
 		
@@ -393,6 +437,7 @@ public class Task2_TDD_1 {
 		assertEquals(result, expected); 
 	}
 	
+<<<<<<< HEAD
 	@Test  
 	public void baseyear_invalid_empty() {
 		
@@ -407,12 +452,19 @@ public class Task2_TDD_1 {
 		String result = engine.evaluate(template, map, matchingMode); 
 		
 		assertEquals(result, expected); 
+=======
+	@Test 
+	public void baseyear_invalid_empty() {
+		
+		map.store("base_year", "");
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 	}
 	
 	@Test 
 	public void baseyear_invalid_negative() {
 		
 		map.store("base_year", "-2");
+<<<<<<< HEAD
 		map.store("year", "in 6 years"); 
 		
 		String template = "I was born in ${year} ${base_year}";
@@ -422,12 +474,15 @@ public class Task2_TDD_1 {
 		String result = engine.evaluate(template, map, matchingMode); 
 		
 		assertEquals(result,expected); 
+=======
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 		
 	}
 	
 	@Test 
 	public void baseyear_invalid_notNumber() {
 		
+<<<<<<< HEAD
 		map.store("year", "in 6 years"); 
 		map.store("base_year", "two thousand");
 		
@@ -438,11 +493,15 @@ public class Task2_TDD_1 {
 		String result = engine.evaluate(template, map, matchingMode); 
 		
 		assertEquals(result,expected); 
+=======
+		map.store("base_year", "two thousand");
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 	}
 	
 	@Test 
 	public void baseyear_invalid_numberandLetters() {
 		
+<<<<<<< HEAD
 		map.store("year", "in 6 years"); 
 		map.store("base_year", "2 thousand");
 		String template = "I was born in ${year} ${base_year}";
@@ -452,6 +511,9 @@ public class Task2_TDD_1 {
 		String result = engine.evaluate(template, map, matchingMode); 
 			
 		assertEquals(result,expected); 
+=======
+		map.store("base_year", "2 thousand");
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 	}
 	
 	
@@ -515,7 +577,11 @@ public class Task2_TDD_1 {
 		String expected = "I was born in in $ years";
 		String result = engine.evaluate(template, map, matchingMode);
 
+<<<<<<< HEAD
 		// System.out.println(expected + "\n" + result);
+=======
+		System.out.println(expected + "\n" + result);
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 
 		assertEquals(result, expected);
 	}
@@ -530,7 +596,11 @@ public class Task2_TDD_1 {
 		String expected = "I was born in $ years ago";
 		String result = engine.evaluate(template, map, matchingMode);
 
+<<<<<<< HEAD
 		// System.out.println(expected + "\n" + result);
+=======
+		System.out.println(expected + "\n" + result);
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 
 		assertEquals(result, expected);
 	}
@@ -552,6 +622,7 @@ public class Task2_TDD_1 {
 	@Test
 	public void base_year_works_blur_search() {
 
+<<<<<<< HEAD
 		map.store("year", "2 years ago");
 		map.store("base_year", "1990");
 		String template = "I was born in ${year } ${base_   year}";
@@ -560,6 +631,15 @@ public class Task2_TDD_1 {
 		String expected = "I was born in 1988 1990";
 		String result = engine.evaluate(template, map, matchingMode);
 		
+=======
+		map.store("base_year", "1990");
+		String template = "I was born in ${base_   year}";
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
+
+		String expected = "I was born in 1990";
+		String result = engine.evaluate(template, map, matchingMode);
+
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 		assertEquals(result, expected);
 
 	}
@@ -567,19 +647,30 @@ public class Task2_TDD_1 {
 	@Test
 	public void base_year_works_case_sensitivity() {
 
+<<<<<<< HEAD
 		map.store("year", "4 years ago"); 
 		map.store("base_year", "1990");
 		String template = "I was born in ${year} ${BASE_YEAR}";
 		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
 
 		String expected = "I was born in 1986 1990";
+=======
+		map.store("base_year", "1990");
+		String template = "I was born in ${BASE_YEAR}";
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
+
+		String expected = "I was born in 1990";
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 		String result = engine.evaluate(template, map, matchingMode);
 
 		assertEquals(result, expected);
 
 	}
 
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 	@Test
 	public void base_year_cant_be_decimal() {
 
@@ -630,4 +721,10 @@ public class Task2_TDD_1 {
 	/////////////////////////////////////////////
 
 
+<<<<<<< HEAD
 } // final
+=======
+}
+=======
+>>>>>>> c6e68e9be154af1155f87aa760986e44763504af
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b

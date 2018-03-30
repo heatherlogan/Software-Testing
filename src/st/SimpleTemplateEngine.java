@@ -155,3 +155,7 @@ public class SimpleTemplateEngine {
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b

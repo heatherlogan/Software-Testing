@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+<<<<<<< HEAD
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -757,3 +758,17 @@ public class Task2_Mutation {
 					}
 
 } // final
+=======
+import org.junit.Test;
+
+public class Task2_Mutation {
+	
+	// Need to add all tests together here from other repo 
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b

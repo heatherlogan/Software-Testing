@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
+=======
+import static org.junit.Assert.*;
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,18 +20,25 @@ public class Task2_TDD_2 {
 	private EntryMap map;
 	private TemplateEngine engine;
 	private SimpleTemplateEngine simpleEngine;
+<<<<<<< HEAD
 	private int year;
+=======
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 
 	@Before
 	public void setUp() throws Exception {
 		map = new EntryMap();
 		engine = new TemplateEngine();
 		simpleEngine = new SimpleTemplateEngine();
+<<<<<<< HEAD
 		year = Calendar.getInstance().get(Calendar.YEAR);
+=======
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
 	}
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
+<<<<<<< HEAD
 
 
 	/*-------------------- Tests special treatment when X is a valid number --------------------*/
@@ -631,3 +642,16 @@ public class Task2_TDD_2 {
 
 
 } // final
+=======
+	
+	
+	/*********** Tests that show ${year} is treated specially if value is "in 6 years" or "in X years" ***************/
+	
+	
+	
+	
+	
+	
+	
+}
+>>>>>>> 1d43c98029fa94ab3003c41fec31889b03c78e6b
